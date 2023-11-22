@@ -52,8 +52,8 @@ public class EmployeesController {
 	}
 	
 	@PatchMapping("/{employeeID}")
-	public ResponseEntity<Employees> updateEmployee(@PathVariable int id,@RequestParam EmployeeDto newEmployee) throws DepartmentNotFoundException, EmployeeNotFoundException{
-		Employees employee = employeesService.updateEmployee(id,newEmployee);
+	public ResponseEntity<Employees> updateEmployee(@PathVariable Integer employeeID,@RequestBody EmployeeDto newEmployee) throws DepartmentNotFoundException, EmployeeNotFoundException{
+		Employees employee = employeesService.updateEmployee(employeeID,newEmployee);
 		if(employee==null) {
 			return ResponseEntity.badRequest().build();
 		}

@@ -58,19 +58,19 @@ public class EmployeesService {
 		Employees employee;
 		try {
 			Employees exEmployee = checkEmpExist.get();
-			if (newEmployee.getFirst_name() != null || newEmployee.getFirst_name() != "") {
+			if (newEmployee.getFirst_name() != null || !newEmployee.getFirst_name().isBlank()) {
 				exEmployee.setFirst_name(newEmployee.getFirst_name());
 			}
-			if (newEmployee.getLast_name() != null || newEmployee.getLast_name() != "") {
+			if (newEmployee.getLast_name() != null || !newEmployee.getLast_name().isBlank()) {
 				exEmployee.setLast_name(newEmployee.getLast_name());
 			}
-			if (newEmployee.getPhone() != null || newEmployee.getPhone() != "") {
+			if (newEmployee.getPhone() != null || !newEmployee.getPhone().isBlank()) {
 				exEmployee.setPhone(newEmployee.getPhone());
 			}
-			if (newEmployee.getEmail() != null || newEmployee.getEmail() != "") {
+			if (newEmployee.getEmail() != null || !newEmployee.getEmail().isBlank()) {
 				exEmployee.setEmail(newEmployee.getEmail());
 			}
-			if (newEmployee.getDepartment_id() != 0) {
+			if (newEmployee.getDepartment_id()!=0) {
 				Departments dept = checkDepartmentExist(newEmployee.getDepartment_id());
 				if (dept != null) {
 					exEmployee.setDepartment(dept);
