@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.erpm.employeeManagementService.dtos.DepartmentDto;
@@ -18,33 +19,29 @@ import com.erpm.employeeManagementService.exceptions.DepartmentNotFoundException
 import com.erpm.employeeManagementService.services.DepartmentService;
 
 @RestController
+@RequestMapping("api/department")
 public class DepartmentController {
 
 	@Autowired
 	DepartmentService departmentService;
 
 	@GetMapping("/{departmentId}")
-	public ResponseEntity<DepartmentDto> getDepartmentById(@PathVariable int departmentId)
+	public ResponseEntity<Departments> getDepartmentById(@PathVariable int departmentId)
 			throws DepartmentNotFoundException {
-		DepartmentDto department = new DepartmentDto();
-		Departments dt = departmentService.getDepartmentById(departmentId);
-		department.setDepartmentId(dt.getDepartment_id());
-		department.setDepartmentName(dt.getName());
+		Departments department = departmentService.getDepartmentById(departmentId);
 		return ResponseEntity.ok(department);
 	}
 
 	@GetMapping
-	public ResponseEntity<List<DepartmentDto>> getAllDepartments() {
-		List<DepartmentDto> departments = departmentService.getAllDepartments().stream()
-				.map(x -> new DepartmentDto(x.getDepartment_id(), x.getName())).toList();
+	public ResponseEntity<List<Departments>> getAllDepartments() {
+		List<Departments> departments = departmentService.getAllDepartments();
 		return ResponseEntity.ok(departments);
 	}
 
 	@PostMapping
-	public ResponseEntity<DepartmentDto> addDepartment(@RequestBody DepartmentDto department) {
-		Departments depa = departmentService.addDepartment(department);
-		DepartmentDto deptdto = new DepartmentDto(depa.getDepartment_id(), depa.getName());
-		return ResponseEntity.ok(deptdto);
+	public ResponseEntity<Departments> addDepartment(@RequestBody DepartmentDto department) {
+		Departments dept = departmentService.addDepartment(department);
+		return ResponseEntity.ok(dept);
 	}
 
 	@DeleteMapping("/{departmentId}")
@@ -54,10 +51,9 @@ public class DepartmentController {
 	}
 
 	@PatchMapping
-	public ResponseEntity<DepartmentDto> updateDepartment(@RequestBody DepartmentDto department)
+	public ResponseEntity<Departments> updateDepartment(@RequestBody DepartmentDto department)
 			throws DepartmentNotFoundException {
 		Departments dept = departmentService.updateDepartment(department);
-		DepartmentDto newdept = new DepartmentDto(dept.getDepartment_id(), dept.getName());
-		return ResponseEntity.ok(newdept);
+		return ResponseEntity.ok(dept);
 	}
 }

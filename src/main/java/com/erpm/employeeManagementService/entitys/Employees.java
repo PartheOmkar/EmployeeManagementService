@@ -1,5 +1,7 @@
 package com.erpm.employeeManagementService.entitys;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,8 +21,10 @@ public class Employees {
 	@Column(nullable = false)
 	private String email;
 	private String phone;
-	@ManyToOne
+	@JsonManagedReference
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Seniority seniority;
+	@JsonManagedReference
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Departments department;
 	

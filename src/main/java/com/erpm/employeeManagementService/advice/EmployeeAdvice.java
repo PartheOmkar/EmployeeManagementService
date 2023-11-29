@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.erpm.employeeManagementService.exceptions.EmployeeNotFoundException;
+
 @RestControllerAdvice
 public class EmployeeAdvice {
 
@@ -20,5 +22,11 @@ public class EmployeeAdvice {
 			errorMap.put(error.getField(), error.getDefaultMessage());
 		});
 		return errorMap;
+	}
+	
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ExceptionHandler(EmployeeNotFoundException.class)
+	public String employeeNotFound(EmployeeNotFoundException ex) {
+		return ex.getMessage();
 	}
 }

@@ -2,6 +2,8 @@ package com.erpm.employeeManagementService.entitys;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,6 +17,7 @@ public class Departments {
 	private int department_id;
 	private String name;
 
+	@JsonBackReference
 	@OneToMany(mappedBy = "department")
 	private Set<Employees> employees;
 

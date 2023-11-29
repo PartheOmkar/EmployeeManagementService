@@ -5,6 +5,7 @@ public class EmployeeDto {
 	private String last_name;
 	private String email;
 	private String phone;
+	private int seniority_id;
 	private int department_id;
 
 	public EmployeeDto() {
@@ -25,6 +26,17 @@ public class EmployeeDto {
 		this.last_name = last_name;
 		this.email = email;
 		this.phone = phone;
+		this.department_id = department_id;
+	}
+
+	public EmployeeDto(String first_name, String last_name, String email, String phone, int seniority_id,
+			int department_id) {
+		super();
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.email = email;
+		this.phone = phone;
+		this.seniority_id = seniority_id;
 		this.department_id = department_id;
 	}
 
@@ -66,6 +78,14 @@ public class EmployeeDto {
 
 	public void setDepartment_id(int department_id) {
 		this.department_id = department_id;
+	}
+
+	public int getSeniority_id() {
+		return seniority_id;
+	}
+
+	public void setSeniority_id(int seniority_id) {
+		this.seniority_id = seniority_id;
 	}
 
 }

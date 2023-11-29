@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import com.erpm.employeeManagementService.dtos.EmployeeDto;
 import com.erpm.employeeManagementService.entitys.Departments;
 import com.erpm.employeeManagementService.entitys.Employees;
+import com.erpm.employeeManagementService.entitys.Seniority;
 import com.erpm.employeeManagementService.exceptions.DepartmentNotFoundException;
 import com.erpm.employeeManagementService.exceptions.EmployeeNotFoundException;
+import com.erpm.employeeManagementService.exceptions.SeniorityNotFoundException;
 import com.erpm.employeeManagementService.repositorys.EmployeesRepositoy;
 
 @Service
@@ -21,33 +23,39 @@ public class EmployeesService {
 	private EmployeesRepositoy employeesRepositoy;
 	@Autowired
 	private DepartmentService departmentService;
-
+	@Autowired
+	private SeniorityService seniorityService;
+	
 	public List<Employees> getAllEmployees() {
 		List<Employees> emps = employeesRepositoy.findAll();
 		return emps;
 	}
 
-	public Employees addEmployee(EmployeeDto newEmployees) throws DepartmentNotFoundException {
+	public Employees addEmployee(EmployeeDto newEmployees) throws DepartmentNotFoundException, SeniorityNotFoundException {
+		
 		Employees employees = new Employees();
 		employees.setFirst_name(newEmployees.getFirst_name());
 		employees.setLast_name(newEmployees.getLast_name());
 		employees.setEmail(newEmployees.getEmail());
 		employees.setPhone(newEmployees.getPhone());
 		employees.setDepartment(departmentService.getDepartmentById(newEmployees.getDepartment_id()));
+		employees.setSeniority(seniorityService.getSeniorityById(newEmployees.getSeniority_id()));
 		employees = employeesRepositoy.save(employees);
+		
 		return employees;
 	}
 
 	public void deleteEmployee(int id) {
 		try {
 			employeesRepositoy.deleteById(id);
+			//employeesRepositoy.sa
 		} catch (IllegalArgumentException e) {
 			throw new IllegalArgumentException("number should be not null");
 		}
 	}
 
 	public Employees updateEmployee(int employeeId, EmployeeDto newEmployee)
-			throws DepartmentNotFoundException, EmployeeNotFoundException {
+			throws DepartmentNotFoundException, EmployeeNotFoundException, SeniorityNotFoundException {
 		Optional<Employees> checkEmpExist = employeesRepositoy.findById(employeeId);
 		Employees employee;
 		try {
@@ -70,12 +78,19 @@ public class EmployeesService {
 					exEmployee.setDepartment(dept);
 				}
 			}
+			if (newEmployee.getSeniority_id() != 0) {
+				Seniority sen = seniorityService.getSeniorityById(newEmployee.getSeniority_id());
+				if (sen != null) {
+					exEmployee.setSeniority(sen);
+				}
+			}
 			employee = employeesRepositoy.save(exEmployee);
 		} catch (DepartmentNotFoundException ex) {
 			throw ex;
 		} catch (NoSuchElementException ex) {
 			throw new EmployeeNotFoundException("employee id +" + employeeId + " not found");
 		}
+
 		return employee;
 	}
 
@@ -88,5 +103,4 @@ public class EmployeesService {
 		}
 		return employee;
 	}
-
 }

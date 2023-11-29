@@ -18,6 +18,7 @@ import com.erpm.employeeManagementService.dtos.EmployeeDto;
 import com.erpm.employeeManagementService.entitys.Employees;
 import com.erpm.employeeManagementService.exceptions.DepartmentNotFoundException;
 import com.erpm.employeeManagementService.exceptions.EmployeeNotFoundException;
+import com.erpm.employeeManagementService.exceptions.SeniorityNotFoundException;
 import com.erpm.employeeManagementService.services.EmployeesService;
 
 @RestController
@@ -44,7 +45,7 @@ public class EmployeesController {
 
 	@PostMapping
 	public ResponseEntity<Employees> addEmployee(@RequestBody EmployeeDto newEmployees)
-			throws DepartmentNotFoundException {
+			throws DepartmentNotFoundException, SeniorityNotFoundException {
 		Employees employee = employeesService.addEmployee(newEmployees);
 		if (employee == null) {
 			return ResponseEntity.badRequest().build();
@@ -52,15 +53,15 @@ public class EmployeesController {
 		return ResponseEntity.ok(employee);
 	}
 
-	@DeleteMapping
-	public ResponseEntity<String> deleteEmployee(@RequestParam int id) {
-		employeesService.deleteEmployee(id);
+	@DeleteMapping("/{employeeID}")
+	public ResponseEntity<String> deleteEmployee(@RequestParam int employeeID) {
+		employeesService.deleteEmployee(employeeID);
 		return ResponseEntity.ok("");
 	}
 
 	@PatchMapping("/{employeeID}")
 	public ResponseEntity<Employees> updateEmployee(@PathVariable Integer employeeID,
-			@RequestBody EmployeeDto newEmployee) throws DepartmentNotFoundException, EmployeeNotFoundException {
+			@RequestBody EmployeeDto newEmployee) throws DepartmentNotFoundException, EmployeeNotFoundException, SeniorityNotFoundException {
 		Employees employee = employeesService.updateEmployee(employeeID, newEmployee);
 		if (employee == null) {
 			return ResponseEntity.badRequest().build();

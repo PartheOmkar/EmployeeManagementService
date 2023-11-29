@@ -43,4 +43,11 @@ public class SeniorityService {
 		return sen;
 	}
 
+	public Seniority addSeniority(SeniorityDto sen) {
+		Seniority seniority = new Seniority();
+		seniority.setSeniority(sen.getSeniority());
+		seniority = seniorityRepository.save(seniority);
+		return seniority;
+	}
+
 }
