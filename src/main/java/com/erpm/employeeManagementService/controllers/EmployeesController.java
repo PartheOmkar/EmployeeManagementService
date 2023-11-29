@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.erpm.employeeManagementService.dtos.EmployeeDto;
+import com.erpm.employeeManagementService.entitys.Employees;
 import com.erpm.employeeManagementService.exceptions.DepartmentNotFoundException;
 import com.erpm.employeeManagementService.exceptions.EmployeeNotFoundException;
-import com.erpm.employeeManagementService.models.Employees;
 import com.erpm.employeeManagementService.services.EmployeesService;
 
 @RestController
@@ -36,25 +36,33 @@ public class EmployeesController {
 		return ResponseEntity.ok(emps);
 	}
 
+	@GetMapping("/{employeeId}")
+	public ResponseEntity<Employees> getEmployeeById(@PathVariable int employeeId) throws EmployeeNotFoundException {
+		Employees employee = employeesService.getEmployeeById(employeeId);
+		return ResponseEntity.ok(employee);
+	}
+
 	@PostMapping
-	public ResponseEntity<Employees> addEmployee(@RequestBody EmployeeDto newEmployees) throws DepartmentNotFoundException{
+	public ResponseEntity<Employees> addEmployee(@RequestBody EmployeeDto newEmployees)
+			throws DepartmentNotFoundException {
 		Employees employee = employeesService.addEmployee(newEmployees);
-		if(employee==null) {
+		if (employee == null) {
 			return ResponseEntity.badRequest().build();
 		}
 		return ResponseEntity.ok(employee);
 	}
-	
+
 	@DeleteMapping
-	public ResponseEntity<String> deleteEmployee(@RequestParam int id){
+	public ResponseEntity<String> deleteEmployee(@RequestParam int id) {
 		employeesService.deleteEmployee(id);
 		return ResponseEntity.ok("");
 	}
-	
+
 	@PatchMapping("/{employeeID}")
-	public ResponseEntity<Employees> updateEmployee(@PathVariable Integer employeeID,@RequestBody EmployeeDto newEmployee) throws DepartmentNotFoundException, EmployeeNotFoundException{
-		Employees employee = employeesService.updateEmployee(employeeID,newEmployee);
-		if(employee==null) {
+	public ResponseEntity<Employees> updateEmployee(@PathVariable Integer employeeID,
+			@RequestBody EmployeeDto newEmployee) throws DepartmentNotFoundException, EmployeeNotFoundException {
+		Employees employee = employeesService.updateEmployee(employeeID, newEmployee);
+		if (employee == null) {
 			return ResponseEntity.badRequest().build();
 		}
 		return ResponseEntity.ok(employee);

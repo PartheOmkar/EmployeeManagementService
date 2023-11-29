@@ -8,11 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.erpm.employeeManagementService.dtos.EmployeeDto;
+import com.erpm.employeeManagementService.entitys.Departments;
+import com.erpm.employeeManagementService.entitys.Employees;
 import com.erpm.employeeManagementService.exceptions.DepartmentNotFoundException;
 import com.erpm.employeeManagementService.exceptions.EmployeeNotFoundException;
-import com.erpm.employeeManagementService.models.Departments;
-import com.erpm.employeeManagementService.models.Employees;
-import com.erpm.employeeManagementService.repositorys.DepartmentsRepository;
 import com.erpm.employeeManagementService.repositorys.EmployeesRepositoy;
 
 @Service
@@ -21,7 +20,7 @@ public class EmployeesService {
 	@Autowired
 	private EmployeesRepositoy employeesRepositoy;
 	@Autowired
-	private DepartmentsRepository departmentsRepository;
+	private DepartmentService departmentService;
 
 	public List<Employees> getAllEmployees() {
 		List<Employees> emps = employeesRepositoy.findAll();
@@ -34,13 +33,7 @@ public class EmployeesService {
 		employees.setLast_name(newEmployees.getLast_name());
 		employees.setEmail(newEmployees.getEmail());
 		employees.setPhone(newEmployees.getPhone());
-		Optional<Departments> departments = departmentsRepository.findById(newEmployees.getDepartment_id());
-		try {
-			Departments depart = departments.get();
-			employees.setDepartment(depart);
-		} catch (NoSuchElementException ex) {
-			throw new DepartmentNotFoundException("department id" + newEmployees.getDepartment_id() + " not found");
-		}
+		employees.setDepartment(departmentService.getDepartmentById(newEmployees.getDepartment_id()));
 		employees = employeesRepositoy.save(employees);
 		return employees;
 	}
@@ -53,7 +46,8 @@ public class EmployeesService {
 		}
 	}
 
-	public Employees updateEmployee(int employeeId, EmployeeDto newEmployee) throws DepartmentNotFoundException, EmployeeNotFoundException {
+	public Employees updateEmployee(int employeeId, EmployeeDto newEmployee)
+			throws DepartmentNotFoundException, EmployeeNotFoundException {
 		Optional<Employees> checkEmpExist = employeesRepositoy.findById(employeeId);
 		Employees employee;
 		try {
@@ -70,8 +64,8 @@ public class EmployeesService {
 			if (newEmployee.getEmail() != null || !newEmployee.getEmail().isBlank()) {
 				exEmployee.setEmail(newEmployee.getEmail());
 			}
-			if (newEmployee.getDepartment_id()!=0) {
-				Departments dept = checkDepartmentExist(newEmployee.getDepartment_id());
+			if (newEmployee.getDepartment_id() != 0) {
+				Departments dept = departmentService.getDepartmentById(newEmployee.getDepartment_id());
 				if (dept != null) {
 					exEmployee.setDepartment(dept);
 				}
@@ -85,15 +79,14 @@ public class EmployeesService {
 		return employee;
 	}
 
-	private Departments checkDepartmentExist(int id) throws DepartmentNotFoundException {
-		Optional<Departments> departOptional = departmentsRepository.findById(id);
-		Departments dept = new Departments();
+	public Employees getEmployeeById(int employeeId) throws EmployeeNotFoundException {
+		Employees employee;
 		try {
-			dept = departOptional.get();
+			employee = employeesRepositoy.findById(employeeId).get();
 		} catch (NoSuchElementException ex) {
-			throw new DepartmentNotFoundException("department id " + id + " not found");
+			throw new EmployeeNotFoundException("employee id = " + employeeId + " not found");
 		}
-		return dept;
+		return employee;
 	}
 
 }

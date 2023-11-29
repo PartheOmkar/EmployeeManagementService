@@ -1,4 +1,4 @@
-package com.erpm.employeeManagementService.models;
+package com.erpm.employeeManagementService.entitys;
 
 import java.util.Set;
 
@@ -9,21 +9,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Departments {
+public class Seniority {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int department_id;
-	private String name;
-
-	@OneToMany(mappedBy = "department")
+	private int seniority_id;
+	private String seniority;
+	@OneToMany(mappedBy = "seniority")
 	private Set<Employees> employees;
 
-	public long getDepartment_id() {
-		return department_id;
-	}
-
-	public void setDepartment_id(int department_id) {
-		this.department_id = department_id;
+	public int getSeniority_id() {
+		return seniority_id;
 	}
 
 	public Set<Employees> getEmployees() {
@@ -34,12 +30,16 @@ public class Departments {
 		this.employees = employees;
 	}
 
-	public String getName() {
-		return name;
+	public void setSeniority_id(int seniority_id) {
+		this.seniority_id = seniority_id;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getSeniority() {
+		return seniority;
+	}
+
+	public void setSeniority(String seniority) {
+		this.seniority = seniority;
 	}
 
 }

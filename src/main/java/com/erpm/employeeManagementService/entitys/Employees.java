@@ -1,4 +1,4 @@
-package com.erpm.employeeManagementService.models;
+package com.erpm.employeeManagementService.entitys;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -19,9 +19,11 @@ public class Employees {
 	@Column(nullable = false)
 	private String email;
 	private String phone;
+	@ManyToOne
+	private Seniority seniority;
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Departments department;
-
+	
 	public long getEmployee_id() {
 		return employee_id;
 	}
@@ -56,6 +58,14 @@ public class Employees {
 
 	public String getPhone() {
 		return phone;
+	}
+
+	public Seniority getSeniority() {
+		return seniority;
+	}
+
+	public void setSeniority(Seniority seniority) {
+		this.seniority = seniority;
 	}
 
 	public void setPhone(String phone) {
