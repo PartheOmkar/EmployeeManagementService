@@ -19,7 +19,7 @@ import com.erpm.employeeManagementService.exceptions.SeniorityNotFoundException;
 import com.erpm.employeeManagementService.services.SeniorityService;
 
 @RestController
-@RequestMapping("api/seniority")
+@RequestMapping("seniority")
 public class SeniorityController {
 
 	@Autowired

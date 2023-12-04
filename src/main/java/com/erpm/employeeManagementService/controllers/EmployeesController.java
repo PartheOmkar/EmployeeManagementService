@@ -22,7 +22,7 @@ import com.erpm.employeeManagementService.exceptions.SeniorityNotFoundException;
 import com.erpm.employeeManagementService.services.EmployeesService;
 
 @RestController
-@RequestMapping("api/employees")
+@RequestMapping("employees")
 public class EmployeesController {
 
 	@Autowired

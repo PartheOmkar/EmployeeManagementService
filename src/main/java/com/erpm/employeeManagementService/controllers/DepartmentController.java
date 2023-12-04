@@ -19,7 +19,7 @@ import com.erpm.employeeManagementService.exceptions.DepartmentNotFoundException
 import com.erpm.employeeManagementService.services.DepartmentService;
 
 @RestController
-@RequestMapping("api/department")
+@RequestMapping("department")
 public class DepartmentController {
 
 	@Autowired
