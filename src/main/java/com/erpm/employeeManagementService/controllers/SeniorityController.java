@@ -23,7 +23,7 @@ import com.erpm.employeeManagementService.services.SeniorityService;
 public class SeniorityController {
 
 	@Autowired
-	SeniorityService seniorityService;
+	private SeniorityService seniorityService;
 
 	@GetMapping
 	public ResponseEntity<List<Seniority>> getAllSeniority() {

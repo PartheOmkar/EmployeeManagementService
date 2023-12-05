@@ -1,6 +1,9 @@
 package com.erpm.employeeManagementService.dtos;
 
+import com.erpm.employeeManagementService.entitys.Employees;
+
 public class EmployeeDto {
+	private int employee_id;
 	private String first_name;
 	private String last_name;
 	private String email;
@@ -10,6 +13,16 @@ public class EmployeeDto {
 
 	public EmployeeDto() {
 		super();
+	}
+
+	public EmployeeDto(Employees employees) {
+		this.employee_id = employees.getEmployee_id();
+		this.first_name = employees.getFirst_name();
+		this.last_name = employees.getLast_name();
+		this.email = employees.getEmail();
+		this.phone = employees.getPhone();
+		this.seniority_id = employees.getSeniority().getSeniority_id();
+		this.department_id = employees.getDepartment().getDepartment_id();
 	}
 
 	public EmployeeDto(String first_name, String last_name, String email, String phone) {
@@ -86,6 +99,14 @@ public class EmployeeDto {
 
 	public void setSeniority_id(int seniority_id) {
 		this.seniority_id = seniority_id;
+	}
+
+	public int getEmployee_id() {
+		return employee_id;
+	}
+
+	public void setEmployee_id(int employee_id) {
+		this.employee_id = employee_id;
 	}
 
 }

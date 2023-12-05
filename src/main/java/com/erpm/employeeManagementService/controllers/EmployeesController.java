@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.erpm.employeeManagementService.dtos.EmployeeDto;
-import com.erpm.employeeManagementService.entitys.Employees;
+import com.erpm.employeeManagementService.dtos.LeaveRequestDto;
 import com.erpm.employeeManagementService.exceptions.DepartmentNotFoundException;
 import com.erpm.employeeManagementService.exceptions.EmployeeNotFoundException;
 import com.erpm.employeeManagementService.exceptions.SeniorityNotFoundException;
 import com.erpm.employeeManagementService.services.EmployeesService;
+import com.erpm.employeeManagementService.services.LeaveService;
 
 @RestController
 @RequestMapping("employees")
@@ -28,9 +29,12 @@ public class EmployeesController {
 	@Autowired
 	private EmployeesService employeesService;
 
+	@Autowired
+	private LeaveService leaveService;
+
 	@GetMapping
-	public ResponseEntity<List<Employees>> getEmployees() {
-		List<Employees> emps = employeesService.getAllEmployees();
+	public ResponseEntity<List<EmployeeDto>> getEmployees() {
+		List<EmployeeDto> emps = employeesService.getAllEmployees();
 		if (emps.isEmpty()) {
 			return ResponseEntity.noContent().build();
 		}
@@ -38,15 +42,15 @@ public class EmployeesController {
 	}
 
 	@GetMapping("/{employeeId}")
-	public ResponseEntity<Employees> getEmployeeById(@PathVariable int employeeId) throws EmployeeNotFoundException {
-		Employees employee = employeesService.getEmployeeById(employeeId);
+	public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable int employeeId) throws EmployeeNotFoundException {
+		EmployeeDto employee = employeesService.getEmployeeById(employeeId);
 		return ResponseEntity.ok(employee);
 	}
 
 	@PostMapping
-	public ResponseEntity<Employees> addEmployee(@RequestBody EmployeeDto newEmployees)
+	public ResponseEntity<EmployeeDto> addEmployee(@RequestBody EmployeeDto newEmployees)
 			throws DepartmentNotFoundException, SeniorityNotFoundException {
-		Employees employee = employeesService.addEmployee(newEmployees);
+		EmployeeDto employee = employeesService.addEmployee(newEmployees);
 		if (employee == null) {
 			return ResponseEntity.badRequest().build();
 		}
@@ -60,12 +64,25 @@ public class EmployeesController {
 	}
 
 	@PatchMapping("/{employeeID}")
-	public ResponseEntity<Employees> updateEmployee(@PathVariable Integer employeeID,
-			@RequestBody EmployeeDto newEmployee) throws DepartmentNotFoundException, EmployeeNotFoundException, SeniorityNotFoundException {
-		Employees employee = employeesService.updateEmployee(employeeID, newEmployee);
+	public ResponseEntity<EmployeeDto> updateEmployee(@PathVariable Integer employeeID,
+			@RequestBody EmployeeDto newEmployee)
+			throws DepartmentNotFoundException, EmployeeNotFoundException, SeniorityNotFoundException {
+		EmployeeDto employee = employeesService.updateEmployee(employeeID, newEmployee);
 		if (employee == null) {
 			return ResponseEntity.badRequest().build();
 		}
 		return ResponseEntity.ok(employee);
+	}
+
+	@GetMapping("/leaves/{employeeId}")
+	public ResponseEntity<List<LeaveRequestDto>> getLeaveByEmployeeId(@PathVariable int employeeId) {
+		List<LeaveRequestDto> leaves = leaveService.getLeaveByEmployeeId(employeeId);
+		return ResponseEntity.ok(leaves);
+	}
+
+	@GetMapping("/approvar/{approvarId}")
+	public ResponseEntity<List<LeaveRequestDto>> getLeaveByApprovarId(@PathVariable int approvarId) {
+		List<LeaveRequestDto> leaves = leaveService.getLeaveByApprovarId(approvarId);
+		return ResponseEntity.ok(leaves);
 	}
 }

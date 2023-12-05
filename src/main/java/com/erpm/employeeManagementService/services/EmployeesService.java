@@ -26,12 +26,14 @@ public class EmployeesService {
 	@Autowired
 	private SeniorityService seniorityService;
 	
-	public List<Employees> getAllEmployees() {
-		List<Employees> emps = employeesRepositoy.findAll();
+	public List<EmployeeDto> getAllEmployees() {
+		List<EmployeeDto> emps = employeesRepositoy.findAll().stream().map(employee->
+			new EmployeeDto(employee)
+		).toList();
 		return emps;
 	}
 
-	public Employees addEmployee(EmployeeDto newEmployees) throws DepartmentNotFoundException, SeniorityNotFoundException {
+	public EmployeeDto addEmployee(EmployeeDto newEmployees) throws DepartmentNotFoundException, SeniorityNotFoundException {
 		
 		Employees employees = new Employees();
 		employees.setFirst_name(newEmployees.getFirst_name());
@@ -42,7 +44,7 @@ public class EmployeesService {
 		employees.setSeniority(seniorityService.getSeniorityById(newEmployees.getSeniority_id()));
 		employees = employeesRepositoy.save(employees);
 		
-		return employees;
+		return new EmployeeDto(employees);
 	}
 
 	public void deleteEmployee(int id) {
@@ -54,7 +56,7 @@ public class EmployeesService {
 		}
 	}
 
-	public Employees updateEmployee(int employeeId, EmployeeDto newEmployee)
+	public EmployeeDto updateEmployee(int employeeId, EmployeeDto newEmployee)
 			throws DepartmentNotFoundException, EmployeeNotFoundException, SeniorityNotFoundException {
 		Optional<Employees> checkEmpExist = employeesRepositoy.findById(employeeId);
 		Employees employee;
@@ -91,16 +93,16 @@ public class EmployeesService {
 			throw new EmployeeNotFoundException("employee id +" + employeeId + " not found");
 		}
 
-		return employee;
+		return new EmployeeDto(employee);
 	}
 
-	public Employees getEmployeeById(int employeeId) throws EmployeeNotFoundException {
+	public EmployeeDto  getEmployeeById(int employeeId) throws EmployeeNotFoundException {
 		Employees employee;
 		try {
 			employee = employeesRepositoy.findById(employeeId).get();
 		} catch (NoSuchElementException ex) {
 			throw new EmployeeNotFoundException("employee id = " + employeeId + " not found");
 		}
-		return employee;
+		return new EmployeeDto(employee);
 	}
 }

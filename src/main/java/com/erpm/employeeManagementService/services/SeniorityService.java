@@ -15,7 +15,7 @@ import com.erpm.employeeManagementService.repositorys.SeniorityRepository;
 public class SeniorityService {
 
 	@Autowired
-	SeniorityRepository seniorityRepository;
+	private SeniorityRepository seniorityRepository;
 
 	public List<Seniority> getAllSeniority() {
 		List<Seniority> seniorities = seniorityRepository.findAll();

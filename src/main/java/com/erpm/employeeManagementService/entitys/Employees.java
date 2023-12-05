@@ -28,7 +28,7 @@ public class Employees {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Departments department;
 	
-	public long getEmployee_id() {
+	public int getEmployee_id() {
 		return employee_id;
 	}
 

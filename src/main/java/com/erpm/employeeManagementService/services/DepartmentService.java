@@ -15,7 +15,7 @@ import com.erpm.employeeManagementService.repositorys.DepartmentsRepository;
 public class DepartmentService {
 
 	@Autowired
-	DepartmentsRepository departmentsRepository;
+	private DepartmentsRepository departmentsRepository;
 	
 	public Departments getDepartmentById(int departmentId) throws DepartmentNotFoundException {
 		Departments department;

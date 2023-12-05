@@ -23,7 +23,7 @@ import com.erpm.employeeManagementService.services.DepartmentService;
 public class DepartmentController {
 
 	@Autowired
-	DepartmentService departmentService;
+	private DepartmentService departmentService;
 
 	@GetMapping("/{departmentId}")
 	public ResponseEntity<Departments> getDepartmentById(@PathVariable int departmentId)
